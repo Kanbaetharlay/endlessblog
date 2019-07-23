@@ -12,6 +12,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Tutorial;
+use App\Models\Upload;
 
 class Tutorial extends Model
 {
@@ -31,5 +32,23 @@ class Tutorial extends Model
     public function image()
     {
         return $this->belongsTo('App\Models\Upload');
+    }
+
+    public function subcategory()
+    {
+        return $this->belongsTo('App\Models\Subcategory','sub_category');
+    }
+
+    public function uploadimage($image)
+    {
+        $image_decode = json_decode($image);
+        $img1 = null;
+        if(count($image_decode) > 0){
+            foreach ($image_decode as $key => $value) {
+                $img_upload = Upload::find($value);
+                $img1 = 'files/'.$img_upload->hash.'/'.$img_upload->name;
+            }
+        }
+        return $img1;
     }
 }

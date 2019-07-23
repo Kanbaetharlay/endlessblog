@@ -22,11 +22,16 @@ class FrontController extends Controller
     }
     public function index(Request $request)
     {
-      
+      $tutorials = Tutorial::select('id','title','content','images','post_date','sub_category')
+                            ->orderBy('post_date','desc')
+                            ->limit(3)
+                            ->get();
+     
         return view('front.index')
                 ->with('categories',$this->categories)
                 ->with('sub_categories',$this->sub_categories)
-                ->with('tutorials',$this->tutorials);
+                ->with('tutorials',$this->tutorials)
+                ->with('tutorials',$tutorials);
     }
 
     public function showAllTutorials($subcat_id)
@@ -42,16 +47,18 @@ class FrontController extends Controller
     public function detailTutorial($id)
     {
         $tutorial = Tutorial::find($id);
-        $image_decode = json_decode($tutorial->images);
-        $img = [];
-        $img1 = null;
-        if(count($image_decode) > 0){
-            foreach ($image_decode as $key => $value) {
-                $img_upload = Upload::find($value);
-                $img[] = 'files/'.$img_upload->hash.'/'.$img_upload->name;
-                $img1 = 'files/'.$img_upload->hash.'/'.$img_upload->name;
-            }
-        }
+        $image = new Tutorial;
+        $img1 = $image->uploadimage($tutorial->images);
+        // $image_decode = json_decode($tutorial->images);
+        // $img = [];
+        // $img1 = null;
+        // if(count($image_decode) > 0){
+        //     foreach ($image_decode as $key => $value) {
+        //         $img_upload = Upload::find($value);
+        //         $img[] = 'files/'.$img_upload->hash.'/'.$img_upload->name;
+        //         $img1 = 'files/'.$img_upload->hash.'/'.$img_upload->name;
+        //     }
+        // }
         
         return view('front.tutorials.detail')
         ->with('categories',$this->categories)

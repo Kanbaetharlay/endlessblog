@@ -30,4 +30,6 @@ class Subcategory extends Model
     {
         return $this->hasMany('App\Models\Tutorial','sub_category');
     }
+
+   
 }

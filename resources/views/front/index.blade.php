@@ -165,96 +165,36 @@
                         ============================================= -->
                         <h4 class="mb-2 ls1 uppercase t700">Recent Tutorials</h4>
                         <div class="line line-xs line-sports"></div>
-                        <div class="ipost mb-4 mb-lg-4 row clearfix">
-                            <div class="col-md-5">
-                                <div class="entry-image mb-0">
-                                    <a href="#"><img src="https://i.ytimg.com/vi/4ECNmNWFEBA/maxresdefault.jpg" alt="Image"></a>
-                                    <div class="entry-categories"><a href="#" class="bg-fashion">Android</a></div>
-                                </div>
-                            </div>
-                            <div class="col-md-7">
-                                <div class="entry-title mt-lg-0 mt-3">
-                                    <h3><a href="#">Laravel middleware to remove/trim empty whitespace from the input request</a></h3>
-                                </div>
-                                <ul class="entry-meta clearfix">
-                                    <li><span>by</span> <a href="#">John Doe</a></li>
-                                    <li><i class="icon-line-clock"></i>11 Mar 2016</li>
-                                </ul>
-                                <div class="entry-content mt-0">
-                                    <p>In this Laravel PHP Tutorial, I will let you know how to create custom middleware to strip whitespace from the beginning of the string in the request.
-You can trim all input using the custom middleware in the Laravel.</p>
-                                </div>
-                            
-                                <a href="#" class="button button-rounded button-reveal button-mini button-dirtygreen tright float-right"><i class="icon-angle-right"></i><span>Read more</span></a>
-                            </div>
-                        </div>
-
-                        <div class="ipost mb-4 mb-lg-4 row clearfix">
+                       
+                        @if(count($tutorials) > 0)
+                            @foreach($tutorials as $tutorial)
+                            <div class="ipost mb-4 mb-lg-4 row clearfix">
                             <div class="col-md-5">
                                 <div class="entry-image mb-0">
                                     <a href="#">
-                                        <iframe width="560" height="315" src="https://www.youtube.com/embed/DbqNcHEizpA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                        <?php $tt = new App\Models\Tutorial; ?>
+                                        <img src="{{$tt->uploadimage($tutorial->images)}}" alt="Image">
                                     </a>
-                                    <div class="entry-categories"><a href="#" class="bg-market">PHP</a></div>
+                                    <div class="entry-categories"><a href="#" class="bg-fashion">{{$tutorial->subcategory->name}}</a></div>
                                 </div>
                             </div>
                             <div class="col-md-7">
                                 <div class="entry-title mt-lg-0 mt-3">
-                                    <h3><a href="#">How to create custom middleware to check custom header for REST API in Laravel 5</a></h3>
+                                    <h3><a href="#">{!!$tutorial->title!!}</a></h3>
                                 </div>
                                 <ul class="entry-meta clearfix">
                                     <li><span>by</span> <a href="#">John Doe</a></li>
-                                    <li><i class="icon-line-clock"></i>11 Mar 2016</li>
+                                    <li><i class="icon-line-clock"></i>{{date('d M Y',strtotime($tutorial->post_date))}}</li>
                                 </ul>
                                 <div class="entry-content mt-0">
-                                    <p>In this Laravel 5 PHP Tutorial, I will let you know how to create our own custom middleware to check custom header for the security.
-
-For example, if you want to check whether security key/token exists in the header or not. you can restrict your apis using middleware with some checks.</p>
+                                {{strip_tags(str_limit($tutorial->content,200,'...'))}}
                                 </div>
-                                <a href="#" class="button button-rounded button-reveal button-mini button-dirtygreen tright float-right"><i class="icon-angle-right"></i><span>Read more</span></a>
+                            
+                                <a href="/detailTutorial/{{$tutorial->id}}" class="button button-rounded button-reveal button-mini button-dirtygreen tright float-right"><i class="icon-angle-right"></i><span>Read more</span></a>
                             </div>
                         </div>
-
-
-
-                        <div class="ipost mb-4 mb-lg-4 row clearfix">
-                            <div class="col-md-5">
-                                <div class="entry-image mb-0">
-                                    <div class="fslider" data-arrows="false" data-speed="400" data-pause="4000">
-                                        <div class="flexslider">
-                                            <div class="slider-wrap">
-                                                <div class="slide">
-                                                    <a href="#"><img src="http://www.expertphp.in/images/articles/ArtImgjxNGVF_croplaravelimage.png" alt="Image 1"></a>
-                                                </div>
-                                                <div class="slide">
-                                                    <a href="#"><img src="https://i.ytimg.com/vi/bd7y5g2Yz3E/maxresdefault.jpg" alt="Image 2"></a>
-                                                </div>
-                                                <div class="slide">
-                                                    <a href="#"><img src="https://i.ytimg.com/vi/21aVzSN30f8/maxresdefault.jpg" alt="Image 2"></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="entry-categories"><a href="#" class="bg-sports">JavaScript</a></div>
-                                </div>
-
-                            </div>
-                            <div class="col-md-7">
-                                <div class="entry-title mt-lg-0 mt-3">
-                                    <h3><a href="#">Laravel PHP - Cropping and uploading an image with Croppie plugin using jQuery Ajax</a></h3>
-                                </div>
-                                <ul class="entry-meta clearfix">
-                                    <li><span>by</span> <a href="#">John Doe</a></li>
-                                    <li><i class="icon-line-clock"></i>11 Mar 2016</li>
-                                </ul>
-                                <div class="entry-content mt-0">
-                                    <p>In this Laravel PHP Tutorial, I am going to tell you how to crop image using jQuery croppie plugin and upload via ajax request in Laravel 5.6
-
-Sometimes you need to implement the functionality to get thumbnail of any images then you can use jQuery croppie plugin to crop the images and upload the thumbnail on the server.</p>
-                                </div>
-                                <a href="#" class="button button-rounded button-reveal button-mini button-dirtygreen tright float-right"><i class="icon-angle-right"></i><span>Read more</span></a>
-                            </div>
-                        </div>
+                            @endforeach
+                        @endif
 
                     </div>
 
