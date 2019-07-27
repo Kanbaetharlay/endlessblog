@@ -171,10 +171,17 @@
                             <div class="ipost mb-4 mb-lg-4 row clearfix">
                             <div class="col-md-5">
                                 <div class="entry-image mb-0">
+                                
+                                    @if(count(json_decode($tutorial->images)) > 0)
                                     <a href="#">
                                         <?php $tt = new App\Models\Tutorial; ?>
                                         <img src="{{$tt->uploadimage($tutorial->images)}}" alt="Image">
                                     </a>
+                                    @elseif($tutorial->shared_link <> null)
+                                    <iframe width="420" height="315"
+src="{{$tutorial->shared_link}}">
+</iframe>
+                                    @endif
                                     <div class="entry-categories"><a href="#" class="bg-fashion">{{$tutorial->subcategory->name}}</a></div>
                                 </div>
                             </div>
@@ -210,7 +217,17 @@
                         <div class="widget widget_links clearfix">
                             <h4 class="mb-2 ls1 uppercase t700">Categories</h4>
                             <div class="line line-xs line-sports"></div>
-                            <ul>
+                            @if(count($sub_categories) > 0)
+                                <ul>
+                                    @foreach($sub_categories as $sub_category)
+                                        @if($sub_category->tutorials->count() > 0)
+                                        <li><a href="/showAllTutorials/{{$sub_category->id}}" class="d-flex justify-content-between align-items-center">{{$sub_category->name}} <span class="badge bg-sports">{{$sub_category->tutorials->count()}}</span></a></li>
+                                        @endif
+                                        
+                                    @endforeach
+                                </ul>
+                            @endif
+                            <!-- <ul>
                                 <li><a href="#" class="d-flex justify-content-between align-items-center">Android<span class="badge bg-sports">14</span></a></li>
                                 <li><a href="#" class="d-flex justify-content-between align-items-center">PHP<span class="badge bg-travel">21</span></a></li>
                                 <li><a href="#" class="d-flex justify-content-between align-items-center">HTML<span class="badge bg-info">32</span></a></li>
@@ -218,7 +235,7 @@
                                 <li><a href="#" class="d-flex justify-content-between align-items-center">JavaScript<span class="badge bg-success">14</span></a></li>
                                 <li><a href="#" class="d-flex justify-content-between align-items-center">Node JS<span class="badge bg-travel">91</span></a></li>
                                 <li><a href="#" class="d-flex justify-content-between align-items-center">React and Redux<span class="badge bg-market">32</span></a></li>
-                            </ul>
+                            </ul> -->
                         </div>
 
                         <!-- Sidebar Widget 2
