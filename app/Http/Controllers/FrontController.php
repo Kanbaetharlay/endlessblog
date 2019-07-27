@@ -22,7 +22,7 @@ class FrontController extends Controller
     }
     public function index(Request $request)
     {
-      $tutorials = Tutorial::select('id','title','content','images','post_date','sub_category')
+      $tutorials = Tutorial::select('id','title','content','images','post_date','sub_category','shared_link')
                             ->orderBy('post_date','desc')
                             ->limit(3)
                             ->get();
@@ -30,7 +30,7 @@ class FrontController extends Controller
         return view('front.index')
                 ->with('categories',$this->categories)
                 ->with('sub_categories',$this->sub_categories)
-                ->with('tutorials',$this->tutorials)
+                // ->with('tutorials',$this->tutorials)
                 ->with('tutorials',$tutorials);
     }
 
