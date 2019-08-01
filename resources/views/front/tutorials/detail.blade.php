@@ -23,8 +23,10 @@
 
 			
 			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="index.html">Home</a></li>
-				<li class="breadcrumb-item active" aria-current="page">Tutorial</li>
+				<li class="breadcrumb-item"><a href="/">Home</a></li>
+				<li class="breadcrumb-item"><a href="#">Tutorials</a></li>
+				<li class="breadcrumb-item"><a href="/showAllTutorials/{{$id}}">{{$subcat_name}}</a></li>
+				<li class="breadcrumb-item active" aria-current="page">{{$tutorial->title}}</li>
 			</ol>
 		</div>
 

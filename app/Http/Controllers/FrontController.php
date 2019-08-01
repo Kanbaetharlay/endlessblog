@@ -22,10 +22,7 @@ class FrontController extends Controller
     }
     public function index(Request $request)
     {
-      $tutorials = Tutorial::select('id','title','content','images','post_date','sub_category','shared_link')
-                            ->orderBy('post_date','desc')
-                            ->limit(3)
-                            ->get();
+      $tutorials = $this->recentTutorial()->limit(3)->get();
      
         return view('front.index')
                 ->with('categories',$this->categories)
@@ -36,11 +33,17 @@ class FrontController extends Controller
 
     public function showAllTutorials($subcat_id)
     {
-        $alltutorial  = Subcategory::find($subcat_id)->tutorials;
-        return view('front.tutorials.showtutorials')->with('categories',$this->categories)
-        ->with('sub_categories',$this->sub_categories)
-        ->with('tutorials',$this->tutorials)
-        ->with('alltutorial',$alltutorial);
+        $subcat = Subcategory::find($subcat_id);
+        $alltutorial  = $subcat->tutorials;
+        $subcat_name = $subcat->name;
+        $sidebar_tutorials = $this->recentTutorial()->limit(5)->get();
+        return view('front.tutorials.showtutorials')
+                ->with('categories',$this->categories)
+                ->with('sub_categories',$this->sub_categories)
+                ->with('tutorials',$this->tutorials)
+                ->with('alltutorial',$alltutorial)
+                ->with('subcat_name',$subcat_name)
+                ->with('sidebar_tutorials',$sidebar_tutorials);
         
     }
 
@@ -49,6 +52,8 @@ class FrontController extends Controller
         $tutorial = Tutorial::find($id);
         $image = new Tutorial;
         $img1 = $image->uploadimage($tutorial->images);
+        $subcat_name = $tutorial->subcategory;
+        
         // $image_decode = json_decode($tutorial->images);
         // $img = [];
         // $img1 = null;
@@ -65,7 +70,9 @@ class FrontController extends Controller
         ->with('sub_categories',$this->sub_categories)
         ->with('tutorials',$this->tutorials)
         ->with('tutorial',$tutorial)
-        ->with('img1',$img1);
+        ->with('img1',$img1)
+        ->with('id',$id)
+        ->with('subcat_name',$subcat_name->name);
     }
 
     public function topic($id)
@@ -75,5 +82,12 @@ class FrontController extends Controller
                 ->with('categories',$this->categories)
                 ->with('sub_categories',$this->sub_categories)
                 ->with('tutorials',$this->tutorials);
+    }
+
+    public function recentTutorial()
+    {
+        $sidebar_tutorials = Tutorial::select('id','title','content','images','post_date','sub_category','shared_link')
+        ->orderBy('post_date','desc');
+        return $sidebar_tutorials;
     }
 }

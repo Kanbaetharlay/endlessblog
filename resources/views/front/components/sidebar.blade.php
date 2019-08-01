@@ -9,22 +9,56 @@
 					<div class="widget widget_links clearfix">
 						<h4 class="mb-2 ls1 uppercase t700">Categories</h4>
 
-						<ul>
-							<li><a href="http://codex.wordpress.org/">PHP</a></li>
-							<li><a href="http://wordpress.org/support/forum/requests-and-feedback">MYSQL</a></li>
-							<li><a href="http://wordpress.org/extend/plugins/">HTML</a></li>
-							<li><a href="http://wordpress.org/support/">CSS</a></li>
-							<li><a href="http://wordpress.org/extend/themes/">IOS</a></li>
-							<li><a href="http://wordpress.org/news/">JavaScript</a></li>
-							<li><a href="http://planet.wordpress.org/">Other</a></li>
-						</ul>
+						@if(count($sub_categories) > 0)
+							<ul>
+								@foreach($sub_categories as $sub_category)
+									@if($sub_category->tutorials->count() > 0)
+									<li><a href="/showAllTutorials/{{$sub_category->id}}">{{$sub_category->name}}</a></li>
+									@endif
+									
+								@endforeach
+							</ul>
+                    	@endif
+					
 					</div>
 				</div>
 				<!-- Recent Posts -->
 				<div class="widget clearfix">
 
 					<h4>Recent Posts</h4>
+					
+					@if(count($sidebar_tutorials) > 0)
 					<div id="post-list-footer">
+						@foreach($sidebar_tutorials as $stutorial)
+						<div class="spost clearfix">
+							<div class="entry-image">
+							
+									@if(count(json_decode($stutorial->images)) > 0)
+                                    <a href="#">
+                                        <?php $tt = new App\Models\Tutorial; ?>
+                                        <img src="{{$tt->uploadimage($tutorial->images)}}" alt="Image">
+                                    </a>
+                                    @elseif($stutorial->shared_link <> null && isset($stutorial->shared_link))
+                                    <iframe width="420" height="315"
+src="{{$stutorial->shared_link}}">
+</iframe>
+									@else
+										<img src="{{asset('images/no_image.png')}}" alt="EndlessBlog">
+                                    @endif
+							</div>
+							<div class="entry-c">
+								<div class="entry-title">
+									<h4><a href="#">{{strip_tags(str_limit($stutorial->content,200,'...'))}}</a></h4>
+								</div>
+								<ul class="entry-meta">
+									<li>{{date('d M Y',strtotime($stutorial->post_date))}}</li>
+								</ul>
+							</div>
+						</div>
+						@endforeach
+					</div>
+					@endif
+					<!-- <div id="post-list-footer">
 
 						<div class="spost clearfix">
 							<div class="entry-image">
@@ -96,7 +130,7 @@
 							</div>
 						</div>
 
-					</div>
+					</div> -->
 
 				</div>
 
